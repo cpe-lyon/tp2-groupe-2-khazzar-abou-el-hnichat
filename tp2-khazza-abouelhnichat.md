@@ -22,5 +22,76 @@ _ : Elle contient le chemin vers la commande printenv :  contains directory befo
 *9.Quelle différence y a-t-il entre donner une valeur vide à une variable et l’utilisation de la commande unset?*  
 **La commande unset supprime la variable, donc elle n'existe plus. Si on donne la valeur vide à une variable, bien qu'elle ne contient rien elle existe toujours** 
 *10.Utilisez la commande echo pour écrire exactement la phrase :$HOME =chemin(où chemin est votredossier personnel d’après bash)*  
-**echo '$HOME :' $HOME**
+**echo '$HOME :' $HOME**  
+  
+    
+*Exercice 2. Contrôle de mot de passe*  
+*Écrivez un script testpwd.sh qui demande de saisir un mot de passe et vérifie s’il correspond ou non aucontenu d’une variablePASSWORDdont le contenu est codé en dur dans le script. Le mot de passe saisi parl’utilisateur ne doit pas s’aﬀicher.*
+**#!/bin/bash
+PASSWORD=admin
+read -p "Saisissez le mot de passe" -s mdp
+echo 
+if [ $PASSWORD = $mdp ]
+then
+        echo "GOOD"
+else
+        echo "WRONG"
+
+fi**  
+  
+*Exercice 3. Expressions rationnelles  
+Ecrivez un script qui prend un paramètre et utilise la fonction suivante pour vérifier que ce paramètreest un nombre réel :
+function is_number()  
+{re='^[+-]?[0-9]+([.][0-9]+)?$'  
+if ! [[ $1 =~ $re ]] ;   
+then 
+return 1  
+else  
+return 0  
+fi}  
+Il aﬀichera un message d’erreur dans le cas contraire.*  
+**#!/bin/bash  
+function is_number(){  #on recupere la fonction donné
+re='^[+-]?[0-9]+([.][0-9]+)?$'
+if ! [[ $1 =~ $re ]] ;
+ then return 1 # elle retourne 1 quand ce n'est pas un nombre
+else
+return 0 # et retourne 0 quand c'est un nombre
+fi }
+read -p "entrez un nombre  :  " nbr  #on rentre la reponse de l'user dans nbr
+echo
+is_number $nbr #on execute la fonction avec nbr
+if [ $? = 0 ]  #avec $? on recupere ce que renvoi la derniere fonction
+then
+echo "c'est un nombre"
+else
+echo "ce n'es pas un nombre"
+fi**  
+  
+*Exercice 4. Contrôle d’utilisateur  
+Écrivez un script qui vérifie l’existence d’un utilisateur dont le nom est donné en paramètre du script. Si le script est appelé sans nom d’utilisateur, il aﬀiche le message : ”Utilisation :nom_du_scriptnom_utilisateur”,où nom_du_scriptest le nom de votre script récupéré automatiquement (si vous changez le nom de votre script, le message doit changer automatiquement)* 
+**
+#!/bin/bash
+
+if [ -z $1 ];then
+        echo "Utilisation : $0 nom_utilisateur"
+else
+        for user in $(cut -d: -f1 /etc/passwd)
+        do
+                if [ $user = $1 ];then
+                        echo "Utilisateur existant :)"
+                        exit
+                fi
+        done
+        echo "Utilisateur inexistant"
+fi**
+
+*Exercice 5. Factorielle  
+Écrivez un programme qui calcule la factorielle d’un entier naturel passé en paramètre (on supposera quel’utilisateur saisit toujours un entier naturel).*  
+
+
+
+
+
+
 
